@@ -1,8 +1,10 @@
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { CiHome, CiImageOn, CiMail, CiShoppingTag, CiCalendar,CiCircleQuestion,CiUser  } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import { CiLogout,CiLogin } from "react-icons/ci";
+import { BsCashCoin,BsTable,BsGraphDown  } from "react-icons/bs";
+import { FaRegUser } from "react-icons/fa6";
+import { TbLogout2 } from "react-icons/tb";
+import { TbLogin2 } from "react-icons/tb";
 
 export default function MobileNavPanel(props) {
     const isOpen = props.isOpen;
@@ -42,7 +44,7 @@ export default function MobileNavPanel(props) {
                         transition-transform duration-300 ease-in-out shadow-lg`}
                     >
                         <div className="bg-accent w-full h-[70px] flex justify-center items-center relative">
-                            <img src="/logo.jpg" alt='logo' className='w-[60px] h-[60px] object-cover border-[1px] absolute left-1 rounded-full ' />
+                            <img src="/logo.png" alt='logo' className='w-[60px] h-[60px] object-cover border-[1px] absolute left-1 rounded-full ' />
                             <IoMdClose
                                 className="absolute right-3 text-3xl cursor-pointer hover:text-red-500 transition-colors"
                                 onClick={() => setOpen(false)}
@@ -51,27 +53,18 @@ export default function MobileNavPanel(props) {
 
                         <div className="p-3 space-y-2">
                             <div onClick={() => Goto('/')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                <CiHome className="text-2xl" /> Home
+                                <BsGraphDown className="text-2xl" /> Dashboard
                             </div>
-                            <div onClick={() => Goto('/gallery')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                <CiImageOn className="text-2xl" /> Gallery
+                            <div onClick={() => Goto('/schedules')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
+                                <BsTable className="text-2xl" /> Schedules
                             </div>
-                            <div onClick={() => Goto('/contact')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                <CiMail className="text-2xl" /> Contact
-                            </div>
-                            <div onClick={() => Goto('/item')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                <CiShoppingTag className="text-2xl" /> Item
-                            </div>
-                            <div onClick={() => Goto('/booking')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                <CiCalendar className="text-2xl" /> Booking
-                            </div>
-                            <div onClick={() => Goto('/inquiry')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                <CiCircleQuestion  className="text-2xl" /> Inquiries
+                            <div onClick={() => Goto('/expenses')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
+                                <BsCashCoin className="text-2xl" /> Expenses
                             </div>
                             {
                                 token &&
                                 <div onClick={() => Goto('/user-profile')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                    <CiUser  className="text-2xl" /> Profile
+                                    <FaRegUser  className="text-2xl" /> Profile
                                 </div>
 
                             }
@@ -80,11 +73,11 @@ export default function MobileNavPanel(props) {
                                     localStorage.removeItem('token')
                                     Goto('/login')
                                 }} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                    <CiLogout className="text-2xl" /> Log Out
+                                    <TbLogout2 className="text-2xl" /> Log Out
                                 </div>
                                 :
                                 <div onClick={() => Goto('/login')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
-                                    <CiLogin className="text-2xl" /> Log In
+                                    <TbLogin2 className="text-2xl" /> Log In
                                 </div>
                             }
                         </div>

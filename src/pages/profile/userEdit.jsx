@@ -84,7 +84,7 @@ export default function UserEdit() {
                 <input type="file" name="profilePicture" onChange={(e)=>setNewImage(e.target.files)} placeholder="Profile Picture URL" className="w-full p-2 border rounded" />
                 <input type="password" name="password" value={user.password} onChange={handleChange} placeholder="Current Password" className="w-full p-2 border rounded" />
                 <input type="password" name="newPassword" value={user.newPassword} onChange={handleChange} placeholder="New Password" className="w-full p-2 border rounded" />
-                <button type="submit" className="bg-accent hover:bg-blue-900 cursor-pointer text-white px-4 py-2 rounded w-full">Update</button>
+                <button type="submit" className="bg-accent hover:bg-accent-second cursor-pointer text-white px-4 py-2 rounded w-full">Update</button>
             </form>
         </div>
     );

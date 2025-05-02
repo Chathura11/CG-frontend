@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BsGraphDown ,BsCashCoin } from "react-icons/bs";
+import { BsGraphDown ,BsCashCoin,BsTable  } from "react-icons/bs";
 
 export default function SideBar(){
     return(
@@ -9,10 +9,15 @@ export default function SideBar(){
                 <BsGraphDown className="text-2xl" />
                 Dashboard
             </Link>
+            <Link to="/schedules" className="flex items-center gap-3 p-4 text-lg hover:bg-primary hover:text-accent transition">
+                <BsTable  className="text-2xl" />
+                Schedules
+            </Link>
             <Link to="/expenses" className="flex items-center gap-3 p-4 text-lg hover:bg-primary hover:text-accent transition">
                 <BsCashCoin className="text-2xl" />
                 Expenses
             </Link>
+            
         </aside>
 
     )

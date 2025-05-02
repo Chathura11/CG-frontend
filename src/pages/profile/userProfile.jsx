@@ -78,15 +78,6 @@ export default function UserProfile() {
                             >
                                 Edit Profile
                             </button>        
-
-                            {user.role === "customer" && (
-                                <button 
-                                    onClick={() => navigate('/user-orders')}
-                                    className="bg-accent text-white px-6 py-2 rounded-full hover:bg-accent-second transition shadow-md cursor-pointer"
-                                >
-                                    My Orders
-                                </button>
-                            )}
                             {user.role === "admin" && (
                                 <button 
                                     onClick={() => window.location.href = '/admin'}
