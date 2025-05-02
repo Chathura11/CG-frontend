@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast'
 import RegisterPage from './pages/register/register';
 import ChangePasswordPage from './pages/forgotPassword/changePasswordPage'
 import ForgotPasswordPage from './pages/forgotPassword/forgotPasswordPage'
+import HomePage from './pages/home/homePage'
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
           <Route path='/Register' element={<RegisterPage/>}></Route>
           <Route path='/forgot-password' element={<ForgotPasswordPage/>}></Route>
           <Route path='/change-password' element={<ChangePasswordPage/>}></Route>
-          <Route path='/*' element={<><h1>Hello</h1></>}/>
+          <Route path='/*' element={<HomePage/>}/>
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
