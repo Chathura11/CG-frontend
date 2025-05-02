@@ -7,6 +7,7 @@ import Dashboard from './dashboard'
 import SideBar from '../../components/sidebar'
 import ExpensesPage from './expensesPage'
 import SchedulesPage from './schedulesPage'
+import AddExpensePage from './addExpensePage'
 
 export default function HomePage(){
     return(
@@ -19,6 +20,7 @@ export default function HomePage(){
                         <Route path='/user-profile' element={<UserProfile/>}></Route>
                         <Route path='/user-edit' element={<UserEdit/>}></Route>
                         <Route path='/expenses' element={<ExpensesPage/>}/>
+                        <Route path='/add-expense' element={<AddExpensePage/>}/>
                         <Route path='/schedules' element={<SchedulesPage/>}/>
                         <Route path='/' element={<Dashboard/>}/>
                         <Route path='/*' element={<Error/>}/>

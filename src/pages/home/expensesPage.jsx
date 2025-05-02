@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import { MdAdd, MdReceiptLong } from "react-icons/md";
 import { BsCashCoin } from "react-icons/bs";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 export default function ExpensesPage() {
   const [expenses, setExpenses] = useState([]);
@@ -14,6 +15,8 @@ export default function ExpensesPage() {
     loan: "bg-[#A34054] text-white",
     entertainment: "bg-red-500 text-white"
   };
+
+  const navigate = useNavigate();
 
   const total = expenses.reduce((sum, e) => sum + e.amount, 0);
 
@@ -100,7 +103,7 @@ export default function ExpensesPage() {
         </div>
       )}
 
-      <button className="absolute right-6 bottom-6 shadow-lg">
+      <button onClick={()=>navigate('/add-expense')} className="absolute right-6 bottom-6 shadow-lg">
         <MdAdd className="bg-accent rounded-full text-white text-6xl p-2 cursor-pointer hover:bg-accent-second transition" />
       </button>
     </div>
