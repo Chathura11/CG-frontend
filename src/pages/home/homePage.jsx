@@ -5,6 +5,7 @@ import Error from './error'
 import UserEdit from '../profile/userEdit'
 import Dashboard from './dashboard'
 import SideBar from '../../components/sidebar'
+import ExpensesPage from './expensesPage'
 
 export default function HomePage(){
     return(
@@ -16,6 +17,7 @@ export default function HomePage(){
                     <Routes path="/*">
                         <Route path='/user-profile' element={<UserProfile/>}></Route>
                         <Route path='/user-edit' element={<UserEdit/>}></Route>
+                        <Route path='/expenses' element={<ExpensesPage/>}/>
                         <Route path='/' element={<Dashboard/>}/>
                         <Route path='/*' element={<Error/>}/>
                     </Routes>
