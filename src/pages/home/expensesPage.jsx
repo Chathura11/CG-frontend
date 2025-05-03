@@ -102,10 +102,8 @@ export default function ExpensesPage() {
           )}
         </div>
       )}
+      <MdAdd onClick={()=>navigate('/add-expense')} className="bg-accent rounded-full fixed right-6 bottom-6 text-white text-6xl p-2 cursor-pointer hover:bg-accent-second transition" />
 
-      <button onClick={()=>navigate('/add-expense')} className="absolute right-6 bottom-6 shadow-lg">
-        <MdAdd className="bg-accent rounded-full text-white text-6xl p-2 cursor-pointer hover:bg-accent-second transition" />
-      </button>
     </div>
   );
 }

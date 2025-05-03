@@ -8,6 +8,7 @@ import SideBar from '../../components/sidebar'
 import ExpensesPage from './expensesPage'
 import SchedulesPage from './schedulesPage'
 import AddExpensePage from './addExpensePage'
+import AddSchedulePage from './addSchedulePage'
 
 export default function HomePage(){
     return(
@@ -22,6 +23,7 @@ export default function HomePage(){
                         <Route path='/expenses' element={<ExpensesPage/>}/>
                         <Route path='/add-expense' element={<AddExpensePage/>}/>
                         <Route path='/schedules' element={<SchedulesPage/>}/>
+                        <Route path='/add-schedule' element={<AddSchedulePage/>}/>
                         <Route path='/' element={<Dashboard/>}/>
                         <Route path='/*' element={<Error/>}/>
                     </Routes>

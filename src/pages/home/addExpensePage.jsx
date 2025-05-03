@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import mediaUpload from "../../utils/mediaUpload";
+import toast from "react-hot-toast";
+import Spinner from '../../components/spinner';
 
 export default function AddExpensePage() {
   const [category, setCategory] = useState("");
@@ -9,10 +11,12 @@ export default function AddExpensePage() {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [receipt, setReceipt] = useState(null);
   const [error, setError] = useState("");
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
     let receiptUrl='';
@@ -21,10 +25,10 @@ export default function AddExpensePage() {
     }
 
     const data ={
-        category : category,
-        amount : amount,
-        date : date,
-        receiptImageUrl : receiptUrl
+      category : category,
+      amount : amount,
+      date : date,
+      receiptImageUrl : receiptUrl
     }
     
 
@@ -36,18 +40,20 @@ export default function AddExpensePage() {
           Authorization: `Bearer ${token}`
         }
       });
-
+      toast.success("Expense added successfully!");
       navigate("/expenses");
+      setLoading(false);
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6 text-center text-accent">Add New Expense</h2>
+    <div className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
+      <h1 className="text-xl font-bold text-accent mb-4">Add New Expense</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5 bg-white p-6 rounded-xl shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         <div>
@@ -59,10 +65,10 @@ export default function AddExpensePage() {
             required
           >
             <option value="">Select category</option>
-            <option value="transport">Transport</option>
-            <option value="food">Food</option>
-            <option value="loan">Loan</option>
-            <option value="entertainment">Entertainment</option>
+            <option value="Transport">Transport</option>
+            <option value="Food">Food</option>
+            <option value="Loan">Loan</option>
+            <option value="Entertainment">Entertainment</option>
           </select>
         </div>
 
@@ -99,10 +105,11 @@ export default function AddExpensePage() {
         </div>
 
         <button
+          disabled={loading?true:false}
           type="submit"
           className="w-full bg-accent text-white py-2 rounded-lg cursor-pointer hover:bg-accent-second transition"
         >
-          Add Expense
+          {loading ? <Spinner/> : "Add Expense"}
         </button>
       </form>
     </div>
