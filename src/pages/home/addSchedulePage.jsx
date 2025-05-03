@@ -1,14 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/spinner";
+import toast from "react-hot-toast";
 
-export default function AddSchedulePage() {
+export default function AddSchedulePage({ edit = false }) {
   const [type, setType] = useState("monthly");
   const [targetAmount, setTargetAmount] = useState("");
   const [categories, setCategories] = useState([{ name: "", limit: "" }]);
   const [remindersEnabled, setRemindersEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const scheduleData = location.state;
+
+  useEffect(() => {
+    if (edit && scheduleData) {
+      setType(scheduleData.type);
+      setTargetAmount(scheduleData.targetAmount);
+      setCategories(scheduleData.categories);
+      setRemindersEnabled(scheduleData.remindersEnabled);
+    }
+  }, [edit, scheduleData]);
 
   const handleCategoryChange = (index, field, value) => {
     const updated = [...categories];
@@ -30,30 +45,43 @@ export default function AddSchedulePage() {
     const token = localStorage.getItem("token");
 
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/schedules`,
-        {
-          type,
-          targetAmount: Number(targetAmount),
-          categories: categories.map((c) => ({
-            name: c.name,
-            limit: Number(c.limit),
-          })),
-          remindersEnabled,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setMessage("Schedule added successfully!");
-      setType("monthly");
-      setTargetAmount("");
-      setCategories([{ name: "", limit: "" }]);
-      setRemindersEnabled(false);
+      const schedulePayload = {
+        type,
+        targetAmount: Number(targetAmount),
+        categories: categories.map((c) => ({
+          name: c.name,
+          limit: Number(c.limit),
+        })),
+        remindersEnabled,
+      };
+
+      if (edit && scheduleData?._id) {
+        await axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/api/schedules/${scheduleData._id}`,
+          schedulePayload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        toast.success("Schedule updated successfully!");
+      } else {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/schedules`,
+          schedulePayload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        toast.success("Schedule added successfully!");
+        setType("monthly");
+        setTargetAmount("");
+        setCategories([{ name: "", limit: "" }]);
+        setRemindersEnabled(false);
+      }
+
+      setTimeout(() => navigate("/schedules"), 1200);
     } catch (error) {
-      setMessage("Error adding schedule.");
+      setMessage("Error saving schedule.");
     } finally {
       setLoading(false);
     }
@@ -61,11 +89,14 @@ export default function AddSchedulePage() {
 
   return (
     <div className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
-      <h1 className="text-xl font-bold text-accent mb-4">Add New Schedule</h1>
+      <h1 className="text-xl font-bold text-accent mb-4">
+        {edit ? "Edit Schedule" : "Add New Schedule"}
+      </h1>
 
-      {message && <p className="mb-4 text-sm text-center text-blue-600">{message}</p>}
+      {message && <p className="mb-4 text-sm text-center text-red-500">{message}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Schedule Type */}
         <div>
           <label className="block font-medium mb-1">Schedule Type</label>
           <select
@@ -80,6 +111,7 @@ export default function AddSchedulePage() {
           </select>
         </div>
 
+        {/* Target Amount */}
         <div>
           <label className="block font-medium mb-1">Target Amount (LKR)</label>
           <input
@@ -91,6 +123,7 @@ export default function AddSchedulePage() {
           />
         </div>
 
+        {/* Categories */}
         <div>
           <label className="block font-medium mb-2">Categories</label>
           {categories.map((cat, index) => (
@@ -135,6 +168,7 @@ export default function AddSchedulePage() {
           </button>
         </div>
 
+        {/* Reminders */}
         <div className="flex items-center">
           <input
             type="checkbox"
@@ -150,7 +184,7 @@ export default function AddSchedulePage() {
           disabled={loading}
           className="w-full bg-accent text-white py-2 px-4 rounded hover:bg-accent-second transition cursor-pointer"
         >
-          {loading ? <Spinner/> : "Create Schedule"}
+          {loading ? <Spinner /> : edit ? "Update Schedule" : "Create Schedule"}
         </button>
       </form>
     </div>

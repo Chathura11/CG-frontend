@@ -1,57 +1,87 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import mediaUpload from "../../utils/mediaUpload";
 import toast from "react-hot-toast";
-import Spinner from '../../components/spinner';
+import Spinner from "../../components/spinner";
 
-export default function AddExpensePage() {
+export default function AddExpensePage({ edit = false }) {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [receipt, setReceipt] = useState(null);
   const [error, setError] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const editingData = location.state;
+
+  // Load data if in edit mode
+  useEffect(() => {
+    if (edit && editingData) {
+      setCategory(editingData.category);
+      setAmount(editingData.amount);
+      setDate(new Date(editingData.date).toISOString().split("T")[0]);
+      setEditingId(editingData._id);
+    }
+  }, [edit, editingData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    let receiptUrl='';
-    if(receipt){
-        receiptUrl = await mediaUpload(receipt);
+    let receiptUrl = "";
+
+    if (receipt) {
+      receiptUrl = await mediaUpload(receipt);
     }
 
-    const data ={
-      category : category,
-      amount : amount,
-      date : date,
-      receiptImageUrl : receiptUrl
-    }
-    
+    const data = {
+      category,
+      amount,
+      date,
+      ...(receiptUrl && { receiptImageUrl: receiptUrl }),
+    };
 
     try {
       const token = localStorage.getItem("token");
-      console.log(data);
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/expenses`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      toast.success("Expense added successfully!");
+
+      if (edit && editingId) {
+        await axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/api/expenses/${editingId}`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        toast.success("Expense updated successfully!");
+      } else {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/expenses`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        toast.success("Expense added successfully!");
+      }
+
       navigate("/expenses");
-      setLoading(false);
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
-      <h1 className="text-xl font-bold text-accent mb-4">Add New Expense</h1>
+      <h1 className="text-xl font-bold text-accent mb-4">
+        {edit ? "Edit Expense" : "Add New Expense"}
+      </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -95,7 +125,9 @@ export default function AddExpensePage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Attach Receipt (optional)</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Attach Receipt (optional)
+          </label>
           <input
             type="file"
             accept="image/*"
@@ -105,11 +137,11 @@ export default function AddExpensePage() {
         </div>
 
         <button
-          disabled={loading?true:false}
+          disabled={loading}
           type="submit"
           className="w-full bg-accent text-white py-2 rounded-lg cursor-pointer hover:bg-accent-second transition"
         >
-          {loading ? <Spinner/> : "Add Expense"}
+          {loading ? <Spinner /> : edit ? "Update Expense" : "Add Expense"}
         </button>
       </form>
     </div>

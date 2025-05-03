@@ -22,8 +22,10 @@ export default function HomePage(){
                         <Route path='/user-edit' element={<UserEdit/>}></Route>
                         <Route path='/expenses' element={<ExpensesPage/>}/>
                         <Route path='/add-expense' element={<AddExpensePage/>}/>
+                        <Route path='/edit-expense' element={<AddExpensePage edit={true}/>}/>
                         <Route path='/schedules' element={<SchedulesPage/>}/>
                         <Route path='/add-schedule' element={<AddSchedulePage/>}/>
+                        <Route path='/edit-schedule' element={<AddSchedulePage edit={true}/>}/>
                         <Route path='/' element={<Dashboard/>}/>
                         <Route path='/*' element={<Error/>}/>
                     </Routes>
