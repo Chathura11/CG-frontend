@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaCalendarAlt, FaBullseye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { MdAdd } from "react-icons/md";
+import { BsTable } from "react-icons/bs";
 
 export default function SchedulesPage() {
   const [schedules, setSchedules] = useState([]);
@@ -42,7 +43,11 @@ export default function SchedulesPage() {
           <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : schedules.length === 0 ? (
-        <p className="text-gray-500">No schedules found.</p>
+          <div className="text-center text-gray-500 py-20">
+            <BsTable className="mx-auto text-6xl text-gray-300 mb-4" />
+            <p className="text-gray-500">No schedules found.</p>
+          </div>
+        
       ) : (
         <div className="w-full max-w-3xl space-y-4">
           {schedules.map((schedule) => (

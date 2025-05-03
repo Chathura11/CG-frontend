@@ -148,7 +148,7 @@ export default function AddSchedulePage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-accent text-white py-2 px-4 rounded hover:bg-accent-second transition"
+          className="w-full bg-accent text-white py-2 px-4 rounded hover:bg-accent-second transition cursor-pointer"
         >
           {loading ? <Spinner/> : "Create Schedule"}
         </button>

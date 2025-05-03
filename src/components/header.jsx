@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { FaBars, FaCartPlus } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { FaBars } from 'react-icons/fa'
+import {  useNavigate } from 'react-router-dom'
 import MobileNavPanel from './mobileNavPanel';
 import { CiLogout,CiLogin } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
