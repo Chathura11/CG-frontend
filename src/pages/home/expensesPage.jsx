@@ -89,7 +89,7 @@ export default function ExpensesPage() {
               return (
                 <div
                   key={expense._id}
-                  className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition border"
+                  className="flex items-center justify-between bg-white p-5 rounded-lg shadow-sm hover:shadow-md transition border relative"
                 >
                   <div className="flex items-center space-x-4">
                     <div
@@ -111,7 +111,8 @@ export default function ExpensesPage() {
                     <p className="text-md font-semibold text-accent whitespace-nowrap">
                       LKR {expense.amount.toFixed(2)}
                     </p>
-
+                  </div>
+                  <div className="absolute right-1 top-0">
                     {/* Edit Button */}
                     <button
                       onClick={() => navigate(`/edit-expense`,{ state: expense })}
