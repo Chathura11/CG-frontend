@@ -139,6 +139,7 @@ export default function AddSchedulePage({ edit = false }) {
                 <option value="Food">Food</option>
                 <option value="Loan">Loan</option>
                 <option value="Entertainment">Entertainment</option>
+                <option value="Other">Other</option>
               </select>
               <input
                 type="number"
@@ -179,13 +180,21 @@ export default function AddSchedulePage({ edit = false }) {
           <label className="font-medium">Enable Reminders</label>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-accent text-white py-2 px-4 rounded hover:bg-accent-second transition cursor-pointer"
-        >
-          {loading ? <Spinner /> : edit ? "Update Schedule" : "Create Schedule"}
-        </button>
+        <div className="flex space-x-1">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-accent text-white py-2 px-4 rounded hover:bg-accent-second transition cursor-pointer"
+          >
+            {loading ? <Spinner /> : edit ? "Update Schedule" : "Create Schedule"}
+          </button>
+          <button 
+            onClick={()=>navigate('/schedules')}
+            disabled={loading} 
+            className="w-full bg-accent text-white py-2 px-4 rounded hover:bg-accent-second transition cursor-pointer">
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

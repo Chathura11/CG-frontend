@@ -20,7 +20,6 @@ export default function Dashboard() {
           }
         );
         setScheduleProgresses(res.data);
-        console.log(res.data);
       } catch (error) {
         console.error("Error fetching schedule progresses:", error.response?.data?.message);
       } finally {

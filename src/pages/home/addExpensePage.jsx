@@ -99,6 +99,7 @@ export default function AddExpensePage({ edit = false }) {
             <option value="Food">Food</option>
             <option value="Loan">Loan</option>
             <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
@@ -136,13 +137,23 @@ export default function AddExpensePage({ edit = false }) {
           />
         </div>
 
-        <button
-          disabled={loading}
-          type="submit"
-          className="w-full bg-accent text-white py-2 rounded-lg cursor-pointer hover:bg-accent-second transition"
-        >
-          {loading ? <Spinner /> : edit ? "Update Expense" : "Add Expense"}
-        </button>
+        <div className="flex space-x-1">
+          <button
+            disabled={loading}
+            type="submit"
+            className="w-full bg-accent text-white py-2 rounded-lg cursor-pointer hover:bg-accent-second transition"
+          >
+            {loading ? <Spinner /> : edit ? "Update Expense" : "Add Expense"}
+          </button>
+          <button
+            disabled={loading}
+            onClick={()=>navigate('/expenses')}
+            className="w-full bg-accent text-white py-2 rounded-lg cursor-pointer hover:bg-accent-second transition"
+          >
+            Cancel
+          </button>
+        </div>
+        
       </form>
     </div>
   );

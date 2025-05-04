@@ -5,6 +5,7 @@ import { BsCashCoin,BsTable,BsGraphDown  } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa6";
 import { TbLogout2 } from "react-icons/tb";
 import { TbLogin2 } from "react-icons/tb";
+import { MdOutlineWorkHistory } from "react-icons/md";
 
 export default function MobileNavPanel(props) {
     const isOpen = props.isOpen;
@@ -60,6 +61,9 @@ export default function MobileNavPanel(props) {
                             </div>
                             <div onClick={() => Goto('/expenses')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
                                 <BsCashCoin className="text-2xl" /> Expenses
+                            </div>
+                            <div onClick={() => Goto('/history')} className='flex items-center gap-3 text-[18px] text-gray-700 hover:bg-accent hover:text-white p-2 rounded-lg cursor-pointer transition'>
+                                <MdOutlineWorkHistory className="text-2xl" /> History
                             </div>
                             {
                                 token &&

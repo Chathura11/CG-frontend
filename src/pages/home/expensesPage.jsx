@@ -58,7 +58,7 @@ export default function ExpensesPage() {
   return (
     <div className="flex w-full h-full justify-center px-4 py-6 relative bg-gray-50">
       {loading ? (
-        <div className="flex w-full h-full justify-center items-center">
+        <div className="flex items-center justify-center h-40">
           <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (

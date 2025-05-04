@@ -75,7 +75,7 @@ export default function SchedulesPage() {
           {schedules.map((schedule) => (
             <div
               key={schedule._id}
-              className="bg-white shadow-sm hover:shadow-md transition p-4 rounded-xl border relative"
+              className="bg-white shadow-sm hover:shadow-md transition p-4 mb-4 rounded-xl border relative"
             >
               {/* Edit/Delete buttons */}
               <div className="absolute top-3 right-3 flex space-x-2">
