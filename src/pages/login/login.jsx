@@ -22,6 +22,7 @@ export default function Login() {
                 user.role === "admin" ? navigate('/admin/') : navigate('/');
             }).catch((error) => {
                 console.log(error);
+                toast.error(error.response?.data?.message);
             });
         }
     });
