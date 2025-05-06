@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { BsGraphDown ,BsCashCoin,BsTable  } from "react-icons/bs";
 import { MdOutlineWorkHistory } from "react-icons/md";
+import { FaChartGantt } from "react-icons/fa6";
 
 export default function SideBar(){
     return(
@@ -21,6 +22,10 @@ export default function SideBar(){
             <Link to="/history" className="flex items-center gap-3 p-4 text-lg hover:bg-primary hover:text-accent transition">
                 <MdOutlineWorkHistory className="text-2xl" />
                 History
+            </Link>
+            <Link to="/summery" className="flex items-center gap-3 p-4 text-lg hover:bg-primary hover:text-accent transition">
+                <FaChartGantt className="text-2xl" />
+                Summery
             </Link>
             
         </aside>
