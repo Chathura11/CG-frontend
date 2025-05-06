@@ -17,6 +17,7 @@ export default function ExpensesPage() {
     food: "bg-[#0A7075] text-white",
     loan: "bg-[#A34054] text-white",
     entertainment: "bg-red-500 text-white",
+    other:"bg-[#670D2F] text-white"
   };
 
   useEffect(() => {

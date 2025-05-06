@@ -51,7 +51,7 @@ export default function Login() {
     return (
         <div className="bg-picture w-full h-screen flex justify-center items-center relative">
             <form onSubmit={handleOnSubmit} className="relative z-10">
-                <div className="w-[600px] h-auto p-8 bg-white/30 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl flex flex-col justify-center items-center space-y-6">
+                <div className="md:w-[600px] h-auto p-8 bg-white/30 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl flex flex-col justify-center items-center space-y-6">
 
                     <img
                         src="/logo.png"

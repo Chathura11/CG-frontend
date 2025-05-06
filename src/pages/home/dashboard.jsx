@@ -6,6 +6,7 @@ import { BsGraphDown } from "react-icons/bs";
 export default function Dashboard() {
   const [scheduleProgresses, setScheduleProgresses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
     async function fetchProgresses() {
@@ -20,6 +21,7 @@ export default function Dashboard() {
           }
         );
         setScheduleProgresses(res.data);
+        setTimeout(() => setAnimate(true), 100);
       } catch (error) {
         console.error("Error fetching schedule progresses:", error.response?.data?.message);
       } finally {
@@ -59,12 +61,13 @@ export default function Dashboard() {
       ) : scheduleProgresses.length === 0 ? (
         <div className="text-center text-gray-500 py-20">
           <BsGraphDown className="mx-auto text-6xl text-gray-300 mb-4" />
-          <p className="text-center text-gray-500">No progress data available.</p>
+          <p>No progress data available.</p>
         </div>
       ) : (
         <div className="space-y-6">
           {scheduleProgresses.map((progress) => {
             const percent = (progress.totalSpent / progress.targetAmount) * 100;
+            const remaining =progress.totalSpent > progress.targetAmount ? 0 :  progress.targetAmount - progress.totalSpent;
             const colorClass = getProgressColor(percent);
             const badgeClass = getBadgeColor(progress.type);
 
@@ -89,20 +92,31 @@ export default function Dashboard() {
 
                 <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className={`h-full ${colorClass} transition-all duration-500`}
-                    style={{ width: `${Math.min(percent, 100)}%` }}
+                    className={`h-full ${colorClass} transition-all duration-700`}
+                    style={{ width: animate ? `${Math.min(percent, 100)}%` : "0%" }}
                   ></div>
                 </div>
 
-                <p className="mt-2 text-sm text-gray-700">
-                  <span className="font-semibold text-accent">
-                    LKR {progress.totalSpent.toFixed(2)}
-                  </span>{" "}
-                  of{" "}
-                  <span className="text-gray-600">
-                    LKR {progress.targetAmount.toFixed(2)}
+                <div className="mt-2 text-sm text-gray-700 md:flex flex-wrap justify-between">
+                  <p>
+                    <span className="font-semibold text-accent">
+                      LKR {progress.totalSpent.toFixed(2)}
+                    </span>{" "}
+                    of{" "}
+                    <span className="text-gray-600">
+                      LKR {progress.targetAmount.toFixed(2)}
+                    </span>
+                  </p>
+                  <span
+                    className={`text-xs font-medium ${
+                      remaining < 0 || remaining == 0
+                        ? " text-red-600"
+                        : " text-accent"
+                    }`}
+                  >
+                    Remaining: LKR {Math.abs(remaining).toFixed(2)}
                   </span>
-                </p>
+                </div>
 
                 {/* Category-Level Progress */}
                 <div className="mt-4 space-y-3">
@@ -110,6 +124,7 @@ export default function Dashboard() {
                     const spent = progress.categorySpent?.[cat.name] || 0;
                     const catPercent = (spent / cat.limit) * 100;
                     const catColor = getProgressColor(catPercent);
+                    const catRemaining =spent >cat.limit ? 0 :  cat.limit - spent;
 
                     return (
                       <div key={cat._id}>
@@ -123,13 +138,24 @@ export default function Dashboard() {
                         </div>
                         <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full ${catColor} transition-all duration-500`}
-                            style={{ width: `${Math.min(catPercent, 100)}%` }}
+                            className={`h-full ${catColor} transition-all duration-700`}
+                            style={{ width: animate ? `${Math.min(catPercent, 100)}%` : "0%" }}
                           ></div>
                         </div>
-                        <p className="text-xs text-gray-500">
-                          LKR {spent.toFixed(2)} / {cat.limit.toFixed(2)}
-                        </p>
+                        <div className="md:flex flex-wrap justify-between items-center mt-1 text-xs text-gray-500">
+                          <p>
+                            LKR {spent.toFixed(2)} / {cat.limit.toFixed(2)}
+                          </p>
+                          <span
+                            className={` text-xs font-medium ${
+                              catRemaining < 0 || catRemaining == 0
+                                ? " text-red-600"
+                                : " text-accent"
+                            }`}
+                          >
+                            Remaining: LKR {Math.abs(catRemaining).toFixed(2)}
+                          </span>
+                        </div>
                       </div>
                     );
                   })}
