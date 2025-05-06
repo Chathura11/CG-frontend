@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import mediaUpload from "../../utils/mediaUpload";
+import Spinner from "../../components/spinner";
 
 export default function UserEdit() {
     const [user, setUser] = useState({
@@ -13,6 +14,8 @@ export default function UserEdit() {
         password: "",
         newPassword: ""
     });
+
+    const [loading,setLoading] = useState(false);
 
     const [newImage,setNewImage] = useState(null);
 
@@ -38,6 +41,7 @@ export default function UserEdit() {
     async function handleUpdate(e) {
         e.preventDefault();
         const token = localStorage.getItem('token');
+        setLoading(true);
 
         let newImageUrl;
         if(newImage){
@@ -65,7 +69,9 @@ export default function UserEdit() {
         }).catch((error)=>{
             console.log(error.response.data.message);
             toast.error("Update failed!");
-        })  
+        }).finally(()=>{
+            setLoading(false);
+        })
     }
 
     function handleChange(e) {
@@ -84,7 +90,19 @@ export default function UserEdit() {
                 <input type="file" name="profilePicture" onChange={(e)=>setNewImage(e.target.files)} placeholder="Profile Picture URL" className="w-full p-2 border rounded" />
                 <input type="password" name="password" value={user.password} onChange={handleChange} placeholder="Current Password" className="w-full p-2 border rounded" />
                 <input type="password" name="newPassword" value={user.newPassword} onChange={handleChange} placeholder="New Password" className="w-full p-2 border rounded" />
-                <button type="submit" className="bg-accent hover:bg-accent-second cursor-pointer text-white px-4 py-2 rounded w-full">Update</button>
+                <button 
+                    type="submit" 
+                    className="bg-accent hover:bg-accent-second cursor-pointer text-white px-4 py-2 rounded w-full"
+                    disabled={loading}
+                >
+                        {
+                            loading
+                            ?
+                            <Spinner /> 
+                            :
+                            "Update"
+                        }
+                </button>
             </form>
         </div>
     );
