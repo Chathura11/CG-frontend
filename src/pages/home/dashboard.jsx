@@ -96,33 +96,43 @@ export default function Dashboard() {
                 remainingDays > 0 ? remaining / remainingDays : 0;
 
               monthlyInsights = (
-                <div className="mt-4 text-sm text-gray-700 space-y-1 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 text-sm text-gray-700 space-y-1">
                   <p>
-                    📅 <span className="font-medium">{remainingDays}</span> days remaining
+                    <div className="bg-accent/10 text-accent rounded-lg px-3 py-2 flex justify-between items-center">
+                      <span>📅 Remaining Days</span>
+                      <span className="font-medium">{remainingDays}</span> 
+                    </div>
                   </p>
                   <p>
-                    📊 Avg spent/day:{" "}
-                    <span className="font-medium">
-                      LKR {avgDailySpent.toFixed(2)}
-                    </span>
+                    <div className="bg-accent/10 text-accent rounded-lg px-3 py-2 flex justify-between items-center">
+                      <span>📊 Avg spent/day:{" "}</span>
+                      <span className="font-medium">
+                        LKR {avgDailySpent.toFixed(2)}
+                      </span>
+                    </div>
                   </p>
                   <p>
-                    📈 Projected total:{" "}
-                    <span
-                      className={`font-medium ${
-                        projectedTotal > progress.targetAmount
-                          ? "text-red-600"
-                          : "text-green-600"
-                      }`}
-                    >
-                      LKR {projectedTotal.toFixed(2)}
-                    </span>
+                    <div className="bg-accent/10 text-accent rounded-lg px-3 py-2 flex justify-between items-center">
+                      <span>📈 Projected total:{" "}</span>
+                      <span
+                        className={`font-medium ${
+                          projectedTotal > progress.targetAmount
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
+                      >
+                        LKR {projectedTotal.toFixed(2)}
+                      </span>
+                    </div>      
                   </p>
                   <p>
-                    🧮 To stay on track:{" "}
-                    <span className="font-medium">
-                      LKR {allowedPerDay.toFixed(2)} / day
-                    </span>
+                    <div className="bg-accent/10 text-accent rounded-lg px-3 py-2 flex justify-between items-center">
+                      <span>🧮 To stay on track:{" "}</span>
+                      <span className="font-medium">
+                        LKR {allowedPerDay.toFixed(2)} / day
+                      </span>
+                    </div>
+                    
                   </p>
                 </div>
               );
