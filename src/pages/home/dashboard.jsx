@@ -8,6 +8,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [animate, setAnimate] = useState(false);
 
+  const today = new Date();
+
   useEffect(() => {
     async function fetchProgresses() {
       const token = localStorage.getItem("token");
@@ -33,9 +35,9 @@ export default function Dashboard() {
   }, []);
 
   function getProgressColor(percent) {
-    if (percent >= 100) return "bg-[#ee6055]";
-    if (percent >= 50) return "bg-[#fec89a]";
-    return "bg-[#a7e8bd]";
+    if (percent >= 100) return "bg-[#CB0404]";
+    if (percent >= 50) return "bg-[#F4631E]";
+    return "bg-[#5CB338]";
   }
 
   function getBadgeColor(type) {
@@ -46,6 +48,14 @@ export default function Dashboard() {
       yearly: "bg-yellow-100 text-yellow-700",
     };
     return colors[type] || "bg-gray-100 text-gray-700";
+  }
+
+  function getDaysInMonth(date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  }
+
+  function getCurrentDay(date) {
+    return date.getDate();
   }
 
   return (
@@ -67,9 +77,56 @@ export default function Dashboard() {
         <div className="space-y-6">
           {scheduleProgresses.map((progress) => {
             const percent = (progress.totalSpent / progress.targetAmount) * 100;
-            const remaining =progress.totalSpent > progress.targetAmount ? 0 :  progress.targetAmount - progress.totalSpent;
+            const remaining =
+              progress.totalSpent > progress.targetAmount
+                ? 0
+                : progress.targetAmount - progress.totalSpent;
             const colorClass = getProgressColor(percent);
             const badgeClass = getBadgeColor(progress.type);
+
+            // Monthly-specific insights (total-based only)
+            let monthlyInsights = null;
+            if (progress.type === "monthly") {
+              const daysInMonth = getDaysInMonth(today);
+              const currentDay = getCurrentDay(today);
+              const remainingDays = daysInMonth - currentDay;
+              const avgDailySpent = progress.totalSpent / currentDay;
+              const projectedTotal = avgDailySpent * daysInMonth;
+              const allowedPerDay =
+                remainingDays > 0 ? remaining / remainingDays : 0;
+
+              monthlyInsights = (
+                <div className="mt-4 text-sm text-gray-700 space-y-1 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                  <p>
+                    📅 <span className="font-medium">{remainingDays}</span> days remaining
+                  </p>
+                  <p>
+                    📊 Avg spent/day:{" "}
+                    <span className="font-medium">
+                      LKR {avgDailySpent.toFixed(2)}
+                    </span>
+                  </p>
+                  <p>
+                    📈 Projected total:{" "}
+                    <span
+                      className={`font-medium ${
+                        projectedTotal > progress.targetAmount
+                          ? "text-red-600"
+                          : "text-green-600"
+                      }`}
+                    >
+                      LKR {projectedTotal.toFixed(2)}
+                    </span>
+                  </p>
+                  <p>
+                    🧮 To stay on track:{" "}
+                    <span className="font-medium">
+                      LKR {allowedPerDay.toFixed(2)} / day
+                    </span>
+                  </p>
+                </div>
+              );
+            }
 
             return (
               <div
@@ -109,22 +166,23 @@ export default function Dashboard() {
                   </p>
                   <span
                     className={`text-xs font-medium ${
-                      remaining < 0 || remaining == 0
-                        ? " text-red-600"
-                        : " text-accent"
+                      remaining <= 0 ? "text-red-600" : "text-accent"
                     }`}
                   >
                     Remaining: LKR {Math.abs(remaining).toFixed(2)}
                   </span>
                 </div>
 
-                {/* Category-Level Progress */}
+                {/* Monthly-only insights for total spending */}
+                {monthlyInsights}
+
+                {/* Category-Level Progress (unchanged) */}
                 <div className="mt-4 space-y-3">
                   {progress.categories?.map((cat) => {
                     const spent = progress.categorySpent?.[cat.name] || 0;
                     const catPercent = (spent / cat.limit) * 100;
                     const catColor = getProgressColor(catPercent);
-                    const catRemaining =spent >cat.limit ? 0 :  cat.limit - spent;
+                    const catRemaining = spent > cat.limit ? 0 : cat.limit - spent;
 
                     return (
                       <div key={cat._id}>
@@ -139,7 +197,11 @@ export default function Dashboard() {
                         <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
                           <div
                             className={`h-full ${catColor} transition-all duration-700`}
-                            style={{ width: animate ? `${Math.min(catPercent, 100)}%` : "0%" }}
+                            style={{
+                              width: animate
+                                ? `${Math.min(catPercent, 100)}%`
+                                : "0%",
+                            }}
                           ></div>
                         </div>
                         <div className="md:flex flex-wrap justify-between items-center mt-1 text-xs text-gray-500">
@@ -147,10 +209,10 @@ export default function Dashboard() {
                             LKR {spent.toFixed(2)} / {cat.limit.toFixed(2)}
                           </p>
                           <span
-                            className={` text-xs font-medium ${
-                              catRemaining < 0 || catRemaining == 0
-                                ? " text-red-600"
-                                : " text-accent"
+                            className={`text-xs font-medium ${
+                              catRemaining <= 0
+                                ? "text-red-600"
+                                : "text-accent"
                             }`}
                           >
                             Remaining: LKR {Math.abs(catRemaining).toFixed(2)}
