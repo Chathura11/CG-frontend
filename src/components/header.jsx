@@ -15,7 +15,7 @@ function Header() {
 
   const token = localStorage.getItem('token');
   const [isDragging, setIsDragging] = useState(false);
-  const [iconPosition, setIconPosition] = useState({ x: window.innerWidth - 150, y: 645 });
+  const [iconPosition, setIconPosition] = useState({ x: window.innerWidth - 80, y: 100 });
 
   useEffect(() => {
     if (token) {
