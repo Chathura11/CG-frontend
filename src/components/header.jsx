@@ -35,26 +35,38 @@ function Header() {
   }, [token]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMove = (e) => {
       if (!isDragging) return;
-      setIconPosition({ x: e.clientX - 30, y: e.clientY - 30 });
+  
+      let x, y;
+      if (e.type === 'touchmove') {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+      } else {
+        x = e.clientX;
+        y = e.clientY;
+      }
+  
+      setIconPosition({ x: x - 30, y: y - 30 });
     };
   
-    const handleMouseUp = () => {
-      setIsDragging(false);
-    };
+    const stopDrag = () => setIsDragging(false);
   
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", stopDrag);
+    window.addEventListener("touchmove", handleMove);
+    window.addEventListener("touchend", stopDrag);
   
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseup", stopDrag);
+      window.removeEventListener("touchmove", handleMove);
+      window.removeEventListener("touchend", stopDrag);
     };
   }, [isDragging]);
 
   return (
-    <header className='w-full h-[70px] relative shadow-md flex justify-center items-center relative bg-accent md:bg-white text-white backdrop-blur-md top-0 z-50'>
+    <header className='w-full h-[70px] shadow-md flex justify-center items-center relative bg-accent md:bg-white text-white backdrop-blur-md top-0 z-50'>
       <img src="/logo.png" alt="Logo" className="w-16 h-16 object-cover border-4 border-white rounded-full shadow-lg hover:scale-105 transition-transform duration-300 absolute left-1" />
 
       <FaBars className='absolute right-5 text-[24px] md:hidden' onClick={() => setNavPanelOpen(true)} />
@@ -89,7 +101,8 @@ function Header() {
       <FcAssistant
         onClick={() => navigate("/financial-assistant")}
         onMouseDown={() => setIsDragging(true)}
-        className="fixed z-50 text-white text-6xl  p-2 rounded-full bg-accent hover:bg-accent-second cursor-move transition"
+        onTouchStart={() => setIsDragging(true)}
+        className="fixed z-50 text-white text-5xl p-2 rounded-full bg-accent hover:bg-accent-second cursor-move transition"
         style={{
           left: `${iconPosition.x}px`,
           top: `${iconPosition.y}px`
