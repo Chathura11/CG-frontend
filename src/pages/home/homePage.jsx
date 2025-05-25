@@ -11,6 +11,7 @@ import AddExpensePage from './addExpensePage'
 import AddSchedulePage from './addSchedulePage'
 import HistoryExpensesPage from './historyExpensesPage'
 import ExpenseSummeryPage from './expenseSummeryPage'
+import FinancialAssistant from '../ai/financialAssistantPage'
 
 export default function HomePage(){
     return(
@@ -25,6 +26,7 @@ export default function HomePage(){
                         <Route path='/expenses' element={<ExpensesPage/>}/>
                         <Route path='/history' element={<HistoryExpensesPage/>}/>
                         <Route path='/summery' element={<ExpenseSummeryPage/>}/>
+                        <Route path='/financial-assistant' element={<FinancialAssistant/>}/>
                         <Route path='/add-expense' element={<AddExpensePage/>}/>
                         <Route path='/edit-expense' element={<AddExpensePage edit={true}/>}/>
                         <Route path='/schedules' element={<SchedulesPage/>}/>

@@ -6,6 +6,7 @@ import MobileNavPanel from './mobileNavPanel';
 import { CiLogout, CiLogin } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import '../App.css'
+import { FcAssistant } from "react-icons/fc";
 
 function Header() {
   const [navPanelOpen, setNavPanelOpen] = useState(false);
@@ -13,6 +14,8 @@ function Header() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
+  const [isDragging, setIsDragging] = useState(false);
+  const [iconPosition, setIconPosition] = useState({ x: window.innerWidth - 80, y: 100 });
 
   useEffect(() => {
     if (token) {
@@ -31,8 +34,27 @@ function Header() {
     }
   }, [token]);
 
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging) return;
+      setIconPosition({ x: e.clientX - 30, y: e.clientY - 30 });
+    };
+  
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+  
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging]);
+
   return (
-    <header className='w-full h-[70px] shadow-md flex justify-center items-center relative bg-accent md:bg-white text-white backdrop-blur-md top-0 z-50'>
+    <header className='w-full h-[70px] relative shadow-md flex justify-center items-center relative bg-accent md:bg-white text-white backdrop-blur-md top-0 z-50'>
       <img src="/logo.png" alt="Logo" className="w-16 h-16 object-cover border-4 border-white rounded-full shadow-lg hover:scale-105 transition-transform duration-300 absolute left-1" />
 
       <FaBars className='absolute right-5 text-[24px] md:hidden' onClick={() => setNavPanelOpen(true)} />
@@ -62,7 +84,19 @@ function Header() {
       )}
 
       <MobileNavPanel isOpen={navPanelOpen} setOpen={setNavPanelOpen} />
+
+      
+      <FcAssistant
+        onClick={() => navigate("/financial-assistant")}
+        onMouseDown={() => setIsDragging(true)}
+        className="fixed z-50 text-white text-6xl  p-2 rounded-full bg-accent hover:bg-accent-second cursor-move transition"
+        style={{
+          left: `${iconPosition.x}px`,
+          top: `${iconPosition.y}px`
+        }}
+      />
     </header>
+      
   );
 }
 
