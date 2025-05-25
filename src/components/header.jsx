@@ -15,7 +15,7 @@ function Header() {
 
   const token = localStorage.getItem('token');
   const [isDragging, setIsDragging] = useState(false);
-  const [iconPosition, setIconPosition] = useState({ x: window.innerWidth - 80, y: 100 });
+  const [iconPosition, setIconPosition] = useState({ x: window.innerWidth - 150, y: 645 });
 
   useEffect(() => {
     if (token) {
@@ -102,7 +102,7 @@ function Header() {
         onClick={() => navigate("/financial-assistant")}
         onMouseDown={() => setIsDragging(true)}
         onTouchStart={() => setIsDragging(true)}
-        className="fixed z-50 text-white text-5xl p-2 rounded-full bg-accent hover:bg-accent-second cursor-move transition"
+        className="fixed z-50 text-white text-6xl p-2 rounded-full bg-accent hover:bg-accent-second cursor-move transition"
         style={{
           left: `${iconPosition.x}px`,
           top: `${iconPosition.y}px`
