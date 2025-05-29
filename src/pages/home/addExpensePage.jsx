@@ -9,6 +9,7 @@ export default function AddExpensePage({ edit = false }) {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [description, setDescription] = useState(null);
   const [receipt, setReceipt] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,7 @@ export default function AddExpensePage({ edit = false }) {
       category,
       amount,
       date,
+      description,
       ...(receiptUrl && { receiptImageUrl: receiptUrl }),
     };
 
@@ -101,6 +103,17 @@ export default function AddExpensePage({ edit = false }) {
             <option value="Entertainment">Entertainment</option>
             <option value="Other">Other</option>
           </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+          />
         </div>
 
         <div>

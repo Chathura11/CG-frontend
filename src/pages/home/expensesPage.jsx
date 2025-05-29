@@ -102,8 +102,8 @@ export default function ExpensesPage() {
                       <span className="px-2 py-1 rounded text-sm text-gray-800 capitalize">
                         {expense.category}
                       </span>
-                      <p className="text-xs text-gray-500">
-                        {format(new Date(expense.date), "dd MMM yyyy")}
+                      <p className="px-2 py-1 rounded text-[12px] text-gray-500 capitalize">
+                        {expense.description}
                       </p>
                     </div>
                   </div>
@@ -113,7 +113,12 @@ export default function ExpensesPage() {
                       LKR {expense.amount.toFixed(2)}
                     </p>
                   </div>
-                  <div className="absolute right-1 top-0">
+                  <div className="absolute right-1 top-0 flex items-center gap-3">
+                    <div>
+                      <p className="text-xs text-gray-500">
+                          {format(new Date(expense.date), "dd MMM yyyy")}
+                      </p>
+                    </div>
                     {/* Edit Button */}
                     <button
                       onClick={() => navigate(`/edit-expense`,{ state: expense })}
