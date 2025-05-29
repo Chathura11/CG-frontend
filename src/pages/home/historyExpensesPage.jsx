@@ -184,7 +184,8 @@ export default function HistoryExpensesPage() {
                     {new Date(exp.date).toDateString()}
                   </span>
                 </div>
-                <div className="text-gray-500">{exp.description || exp.category}</div>
+                <div className="text-gray-900">{exp.category}</div>
+                <div className="text-gray-500">{exp.description}</div>
               </div>
               <div className="text-right">
                 <span className="text-accent font-bold text-lg">

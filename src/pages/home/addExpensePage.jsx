@@ -23,6 +23,7 @@ export default function AddExpensePage({ edit = false }) {
   useEffect(() => {
     if (edit && editingData) {
       setCategory(editingData.category);
+      setDescription(editingData.description);
       setAmount(editingData.amount);
       setDate(new Date(editingData.date).toISOString().split("T")[0]);
       setEditingId(editingData._id);
@@ -106,12 +107,11 @@ export default function AddExpensePage({ edit = false }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <label className="block text-sm font-medium text-gray-700">Description(Optional)</label>
           <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
             className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
           />
         </div>
